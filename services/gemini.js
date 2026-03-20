@@ -22,6 +22,7 @@ Instructions:
 2. The JSON keys MUST exactly match the "name" or "id" properties from the input FieldsMap.
 3. If a field cannot be determined from the text, omit it or set it to null.
 4. Convert symptoms into clean, concise medical terminology where appropriate.
+5. id will have the max priority for the key of mapping
 
 Example Output:
 {

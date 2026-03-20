@@ -1,0 +1,8 @@
+{
+  "api": {
+    "backendBaseUrl": "http://localhost:5050"
+  },
+  "backend": {
+    "port": 5050
+  }
+}
