@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import { translateAudio } from '../services/groq.js';
 
 export const transcribeAudio = async (req, res) => {
@@ -8,9 +9,10 @@ export const transcribeAudio = async (req, res) => {
         }
 
         const audioFilePath = req.file.path;
-        const newFilePath = audioFilePath + '.webm';
+        const originalExt = path.extname(req.file.originalname) || '.webm';
+        const newFilePath = audioFilePath + originalExt;
         
-        // Rename file to include .webm extension so Groq can infer MIME type correctly
+        // Rename file to include original extension so Groq can infer MIME type correctly
         fs.renameSync(audioFilePath, newFilePath);
         
         console.log(`[TranscribeController] Processing file: ${newFilePath}`);
@@ -20,7 +22,7 @@ export const transcribeAudio = async (req, res) => {
         console.log(`[TranscribeController] text: ${translatedText}`);
 
         // Clean up temporary audio file after translation
-        fs.unlinkSync(newFilePath);
+         fs.unlinkSync(newFilePath);
 
         res.json({
             success: true,
@@ -33,7 +35,8 @@ export const transcribeAudio = async (req, res) => {
         if (req.file && fs.existsSync(req.file.path)) {
             fs.unlinkSync(req.file.path);
         }
-        const potentialNewPath = req.file ? req.file.path + '.webm' : null;
+        const originalExt = req.file ? path.extname(req.file.originalname) || '.webm' : '';
+        const potentialNewPath = req.file ? req.file.path + originalExt : null;
         if (potentialNewPath && fs.existsSync(potentialNewPath)) {
             fs.unlinkSync(potentialNewPath);
         }
