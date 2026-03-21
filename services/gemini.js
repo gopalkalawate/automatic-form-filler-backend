@@ -2,10 +2,13 @@ import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
 export const mapFields = async (text, fieldsMap) => {
     try {
+        if (!process.env.GEMINI_API_KEY) {
+            throw new Error("GEMINI_API_KEY environment variable is missing.");
+        }
+        
+        const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
         const prompt = `
 You are a medical data extraction assistant. I will provide you with a patient's transcribed complaint ("Text") and a map of available form fields ("FieldsMap").
 Your task is to extract relevant information from the Text and map it to the corresponding keys in FieldsMap.

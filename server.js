@@ -37,6 +37,11 @@ const upload = multer({ dest: os.tmpdir() });
 app.post('/api/transcribe', upload.single('audio'), transcribeAudio);
 app.post('/api/parse', parseTextToFields);
 
+// This handles the "Cannot GET /" error
+app.get('/', (req, res) => {
+  res.send('Form Filler Backend is Running! 🚀');
+});
+
 // Only listen locally, Vercel maps routes natively via Serverless
 if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
   app.listen(port, () => {
